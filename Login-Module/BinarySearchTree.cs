@@ -18,9 +18,9 @@ namespace Login_Module
             while (after != null)
             {
                 before = after;
-                if (temp.getUserName()[0] < after.Account.getUserName()[0]) //Is new node in left tree? 
+                if (temp.getUserName().CompareTo(after.Account.getUserName()) < 0) //Is new node in left tree?  
                     after = after.LeftNode;
-                else if (temp.getUserName()[0] > after.Account.getUserName()[0]) //Is new node in right tree?
+                else if (temp.getUserName().CompareTo(after.Account.getUserName()) > 0) //Is new node in right tree?
                     after = after.RightNode;
                 else
                 {
@@ -36,7 +36,7 @@ namespace Login_Module
                 this.Root = newNode;
             else
             {
-                if (temp.getUserName()[0] < before.Account.getUserName()[0])
+                if (temp.getUserName().CompareTo(before.Account.getUserName()) < 0)
                     before.LeftNode = newNode;
                 else
                     before.RightNode = newNode;
@@ -44,22 +44,7 @@ namespace Login_Module
 
             return true;
         }
-        //public Node FindNode(Node node, string s)
-        //{
-        //    node = this.Root;
-        //    if (node == null)
-        //        return n;
-        //    else if (s.CompareTo(node.Account.getUserName()) < 0)
-        //        return FindNode(node.LeftNode, s);
-        //    else if (s.CompareTo(node.Account.getUserName()) > 0)
-        //        return FindNode(node.RightNode, s);
-        //    else
-        //    {
-        //        return node;
-        //    }
-            
-        //}
-
+       
             public Node Find(string username)
         {
             return this.Find(username, this.Root);
@@ -88,10 +73,10 @@ namespace Login_Module
                     return parent.LeftNode;
 
                 // node with two children: Get the inorder successor (smallest in the right subtree)  
-                parent.Account.getUserName() = String.Copy(MinValue(parent.RightNode));
+                parent.Account.setUserName(MinValue(parent.RightNode));
 
                 // Delete the inorder successor  
-                parent.RightNode = Remove(parent.RightNode, parent.Data);
+                parent.RightNode = Remove(parent.RightNode, parent.Account.getUserName());
             }
 
             return parent;
@@ -103,7 +88,7 @@ namespace Login_Module
 
             while (node.LeftNode != null)
             {
-                minv = node.LeftNode.Data;
+                minv = node.LeftNode.Account.getUserName();
                 node = node.LeftNode;
             }
 
@@ -134,34 +119,52 @@ namespace Login_Module
             return parent == null ? 0 : Math.Max(GetTreeDepth(parent.LeftNode), GetTreeDepth(parent.RightNode)) + 1;
         }
 
-        public void TraversePreOrder(Node parent)
-        {
-            if (parent != null)
-            {
-                Console.Write(parent.Data + " ");
-                TraversePreOrder(parent.LeftNode);
-                TraversePreOrder(parent.RightNode);
-            }
-        }
-
         public void TraverseInOrder(Node parent)
         {
             if (parent != null)
             {
                 TraverseInOrder(parent.LeftNode);
-                Console.Write(parent.Data + " ");
+                Console.Write(parent.Account.getUserName() + " ");
+                Console.Write(parent.Account.getPassword() + " ");
                 TraverseInOrder(parent.RightNode);
             }
         }
 
-        public void TraversePostOrder(Node parent)
-        {
-            if (parent != null)
-            {
-                TraversePostOrder(parent.LeftNode);
-                TraversePostOrder(parent.RightNode);
-                Console.Write(parent.Data + " ");
-            }
-        }
+        //public void TraversePostOrder(Node parent)
+        //{
+        //    if (parent != null)
+        //    {
+        //        TraversePostOrder(parent.LeftNode);
+        //        TraversePostOrder(parent.RightNode);
+        //        Console.Write(parent.Account.getUserName() + " ");
+        //        Console.Write(parent.Account.getPassword() + " ");
+        //    }
+        //}
+
+        //public Node FindNode(Node node, string s)
+        //{
+        //    node = this.Root;
+        //    if (node == null)
+        //        return n;
+        //    else if (s.CompareTo(node.Account.getUserName()) < 0)
+        //        return FindNode(node.LeftNode, s);
+        //    else if (s.CompareTo(node.Account.getUserName()) > 0)
+        //        return FindNode(node.RightNode, s);
+        //    else
+        //    {
+        //        return node;
+        //    }
+
+        //public void TraversePreOrder(Node parent)
+        //{
+        //    if (parent != null)
+        //    {
+        //        Console.Write(parent.Account.getUserName() + " ");
+        //        Console.Write(parent.Account.getPassword() + " ");
+        //        TraversePreOrder(parent.LeftNode);
+        //        TraversePreOrder(parent.RightNode);
+        //    }
+        //}
+
     }
 }
