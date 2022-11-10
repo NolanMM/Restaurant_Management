@@ -21,7 +21,7 @@ namespace Login_Module
 
             int choice = Convert.ToInt32(Console.ReadLine());
 
-            switch(choice)
+            switch (choice)
             {
                 case 0:
                     string username;
@@ -46,10 +46,35 @@ namespace Login_Module
                     break;
                 case 4:
                     Console.WriteLine("Thank you for using the program\n");
-                    break;  
+                    break;
                 default:
                     break;
             }
+        }
+        static public bool Checking_Password(Staff_Login temp_login, LinkedList<Staff_Login> temp)
+        {
+            if (temp_login.getUserName == null){
+                return false;
+            }
+            else{
+                current = temp.Find(temp_login.getUserName());
+            }
+            return true;
+        }
+        static public void Encrypted()
+        {
+            AesManaged aes = new AesManaged();
+            ICryptoTransform encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
+            MemoryStream ms = new MemoryStream();
+
+            using (CryptoStream cs = new CryptoStream(ms, encryptor, CryptoStreamMode.Write))
+            {
+                // Create StreamWriter and write data to a stream    
+                using (StreamWriter sw = new StreamWriter(cs))
+                    sw.Write(plainText);
+                encrypted = ms.ToArray();
+            }
+
         }
 
         static public LinkedList<Staff_Login> Decrypted_To_Linked_List()
@@ -79,32 +104,6 @@ namespace Login_Module
 
             }
             return list_Account;
-        }
-
-        static public bool Checking_Password(Staff_Login temp_login, LinkedList<Staff_Login> temp)
-        {
-            if (temp_login.getUserName == null){
-                return false;
-            }
-            else{
-                current = temp.Find(temp_login.getUserName);
-            }
-            return true;
-        }
-        static public void Encrypted()
-        {
-            AesManaged aes = new AesManaged();
-            ICryptoTransform encryptor = aes.CreateEncryptor(aes.Key, aes.IV);
-            MemoryStream ms = new MemoryStream();
-
-            using (CryptoStream cs = new CryptoStream(ms, encryptor, CryptoStreamMode.Write))
-            {
-                // Create StreamWriter and write data to a stream    
-                using (StreamWriter sw = new StreamWriter(cs))
-                    sw.Write(plainText);
-                encrypted = ms.ToArray();
-            }
-
         }
 
 

@@ -7,9 +7,9 @@ using System.Xml.Linq;
 
 namespace Login_Module
 {
-    class BinaryTree
+     public class BinaryTree
     {
-        public Node Root { get; set; }
+        private Node Root { get; set; }
      
         public bool Add(Staff_Login temp)
         {
@@ -45,7 +45,7 @@ namespace Login_Module
             return true;
         }
        
-            public Node Find(string username)
+            Node Find(string username)
         {
             return this.Find(username, this.Root);
         }
