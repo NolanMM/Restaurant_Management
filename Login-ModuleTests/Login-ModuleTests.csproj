@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Login-Module\Login-Module.csproj" />
+    <ProjectReference Include="..\Restaurant-Management-System\Restaurant-Management-System.csproj" />
   </ItemGroup>
 
 </Project>

@@ -11,6 +11,7 @@ namespace Login_Module
     {
         static void Main(string[] args)
         {
+            menu();
         }
         static public void menu()
         {
