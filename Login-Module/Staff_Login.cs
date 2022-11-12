@@ -10,10 +10,11 @@ namespace Login_Module
     {
         private string _username; 
         private string _password;
+
         // The link to decrypted the account
-        //byte[] IV = null;
+        private byte[] IV = null;
         //// The key to decrypted the account
-        //byte[] Key = null;
+        private byte[] Key = null;
         public void setUserName(string Username)
         {
             _username = Username;
@@ -30,21 +31,21 @@ namespace Login_Module
         {
             return _password;
         }
-        //public void setKey(byte[] temp_Key)
-        //{
-        //    Key = temp_Key;
-        //}
-        //public byte[] getKey()
-        //{
-        //    return Key;
-        //}
-        //public void setIV(byte[] temp_IV)
-        //{
-        //    IV = temp_IV;
-        //}
-        //public byte[] getIV()
-        //{
-        //    return IV;
-        //}
+        public void setKey(byte[] temp_Key)
+        {
+            Key = temp_Key;
+        }
+        public byte[] getKey()
+        {
+            return Key;
+        }
+        public void setIV(byte[] temp_IV)
+        {
+            IV = temp_IV;
+        }
+        public byte[] getIV()
+        {
+            return IV;
+        }
     }
 }

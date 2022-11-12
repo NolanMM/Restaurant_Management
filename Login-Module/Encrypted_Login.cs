@@ -6,13 +6,13 @@ namespace Login_Module
 
     public class Enccypted_Login
     {
-        public static void Main()
-        {
-            Console.WriteLine("Enter text that needs to be encrypted..");
-            string data = Console.ReadLine();
-            EncryptAesManaged(data);
-            Console.ReadLine();
-        }
+        //public static void Main()
+        //{
+        //    Console.WriteLine("Enter text that needs to be encrypted..");
+        //    string data = Console.ReadLine();
+        //    EncryptAesManaged(data);
+        //    Console.ReadLine();
+        //}
         static void EncryptAesManaged(string raw)
         {
             try
@@ -49,7 +49,7 @@ namespace Login_Module
                 using (MemoryStream ms = new MemoryStream())
                 {
                     // Create crypto stream using the CryptoStream class. This class is the key to encryption    
-                    // and encrypts and decrypts data from any given stream. In this case, we will pass a memory stream    
+                    // and encrypts and decrypts data from any given stream. In this case, I will pass a memory stream    
                     // to encrypt    
                     using (CryptoStream cs = new CryptoStream(ms, encryptor, CryptoStreamMode.Write))
                     {
