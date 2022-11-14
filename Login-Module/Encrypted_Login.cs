@@ -37,7 +37,7 @@ namespace Login_Module
             }
             Console.ReadKey();
         }
-        static byte[] Encrypt(string plainText, byte[] Key, byte[] IV)
+        static public byte[] Encrypt(string plainText, byte[] Key, byte[] IV)
         {
             byte[] encrypted;
             // Create a new AesManaged.    
