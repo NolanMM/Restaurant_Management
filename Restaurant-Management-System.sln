@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Restaurant-Management-System", "Restaurant-Management-System\Restaurant-Management-System.csproj", "{DC72EF6F-F711-4AB1-BC99-A6CAF61FDA58}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Restaurant-Management-System", "Restaurant-Management-System\Restaurant-Management-System.csproj", "{DC72EF6F-F711-4AB1-BC99-A6CAF61FDA58}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Login-Module", "Login-Module\Login-Module.csproj", "{CB90C3E4-B8B5-4181-88F3-928043AC6CD5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Login-Module", "Login-Module\Login-Module.csproj", "{CB90C3E4-B8B5-4181-88F3-928043AC6CD5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Login-ModuleTests", "Login-ModuleTests\Login-ModuleTests.csproj", "{05F80AB1-C486-4762-9CE9-648F3013F383}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Login-ModuleTests", "Login-ModuleTests\Login-ModuleTests.csproj", "{05F80AB1-C486-4762-9CE9-648F3013F383}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

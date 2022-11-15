@@ -15,37 +15,43 @@ namespace Login_Module
         private byte[] IV = null;
         //// The key to decrypted the account
         private byte[] Key = null;
-        public void setUserName(string Username)
-        {
+        public void setUserName(string Username){
             _username = Username;
         }
-        public string getUserName()
-        {
+        public string getUserName(){
             return _username;
         }
-        public void setPassword(string Password)
-        {
+        public void setPassword(string Password){
             _password = Password;
         }
-        public string getPassword()
-        {
+        public string getPassword(){
             return _password;
         }
-        public void setKey(byte[] temp_Key)
-        {
+        public void setKey(byte[] temp_Key){
             Key = temp_Key;
         }
-        public byte[] getKey()
-        {
+        public byte[] getKey(){
             return Key;
         }
-        public void setIV(byte[] temp_IV)
-        {
+        public void setIV(byte[] temp_IV){
             IV = temp_IV;
         }
-        public byte[] getIV()
-        {
+        public byte[] getIV(){
             return IV;
         }
     }
+    public class Inventory
+    {
+
+        private string? _Name;
+        private int Portions;
+
+        public void setNameFood(string name){
+            _Name = name;
+        }
+        public string getNameFood(){
+            return _Name;
+        }
+    }
+    
 }

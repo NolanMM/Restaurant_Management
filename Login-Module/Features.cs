@@ -12,6 +12,7 @@ namespace Login_Module
 {
     public class Features
     {
+        
         static public void Login()
         {
             Console.WriteLine("Welcome to The restaurant\n");
@@ -22,7 +23,7 @@ namespace Login_Module
             Console.WriteLine("4. Exit\n");
 
             int choice = Convert.ToInt32(Console.ReadLine());
-
+            
             switch (choice)
             {
                 case 1:
@@ -106,9 +107,9 @@ namespace Login_Module
             Console.WriteLine("3. Check the security\n");
             Console.WriteLine("4. Check the salary\n");
             Console.WriteLine("5. Check the time table\n");
-            Console.WriteLine("6. Change the Password\n");
-            Console.WriteLine("7. Logout\n");
-            Console.WriteLine("8. Exit\n");
+            Console.WriteLine("7. Change the Password\n");
+            Console.WriteLine("8. Logout\n");
+            Console.WriteLine("9. Exit\n");
 
             int choice;
 
@@ -177,10 +178,9 @@ namespace Login_Module
             {
 
                 LinkedListNode<Staff_Login> _Account_infor = staff_Login_List.Find(staff_Login);
-                if (staff_Login.getPassword().CompareTo(_Account_infor.Value.getPassword()) == 0) //Is new node in left tree?  
+                if (staff_Login.getPassword().CompareTo(_Account_infor.Value.getPassword()) == 0) //Is new node in left tree?
                 {
                     Console.WriteLine("Correct password input\nThank you!!");
-
                     return true;
                 }
                 else if (staff_Login.getPassword().CompareTo(_Account_infor.Value.getPassword()) != 0) //Is new node in right tree?
