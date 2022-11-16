@@ -44,7 +44,7 @@ namespace Login_Module
                     // Call the function to help people with the password
                     // This function will take the input of user 
                     // When have time
-                    Forgot_Password();
+                    Change_Forgot_Password();
                     break;
                 case 3:
                     Program.menu();
@@ -101,7 +101,7 @@ namespace Login_Module
                 Login_Restaurant();
             }
         }
-        static public bool Send_Verify_Code(string randomCode)
+        static public bool Send_Verify_Code(string randomCode,string email_to)
         {
             /* @ Create new variable to hold the sender email, password of the sender, and the message is the code */
             String from, pass, messageBody;
@@ -115,7 +115,7 @@ namespace Login_Module
             MailMessage email = new MailMessage();
             /* @ Input the information of the Receiver and the information for the email components*/
             email.From = new MailAddress(from);
-            email.To.Add("minhlenguyen02@gmail.com");
+            email.To.Add(email_to);
             email.Body = messageBody;
             email.Subject = "Password Reseting Code";
 
@@ -139,13 +139,8 @@ namespace Login_Module
                 return false;
             }
         }
-        static public void Forgot_Password()
+        static public bool Checking_Verify_code(string randomCode)
         {
-            /* @ Create new random variable to automatic generate new verify code when it needed */
-            Random rand = new Random();
-            string randomCode = rand.Next(999999).ToString();
-            Send_Verify_Code(randomCode);
-
             /* @ Checking the verify code 3 times or 
              * @ Else logout and start from beginning due to the security 
              */
@@ -156,7 +151,7 @@ namespace Login_Module
                 {
                     count = -1;
                     Console.WriteLine("You input wrong too many times. You will be transfer to login...\n");
-                    Login();
+                    break;
                 }
                 Console.WriteLine("Please enter the verify code be sent to your email\n");
                 Console.WriteLine("Or enter Exit to Exit, Return to Return\n");
@@ -175,15 +170,12 @@ namespace Login_Module
                 }
                 if(verify_code_input.CompareTo(randomCode) == 0)
                 {
-                    bool flag = Change_Forgot_Password();
-                    if(flag == true)
-                    {
-                        Login_Restaurant();
-                    }
-                    else { Console.WriteLine("Change password failed\n"); }
+                    Console.WriteLine("Change password failed\n");
+                    return true;
                 }
                 else {int times_input_left = 2-count; Console.WriteLine("Wrong Verify code, u have only"+ times_input_left.ToString());count++; }
             }
+            return false;
         }
         static public bool Change_Forgot_Password()
         {
@@ -193,27 +185,41 @@ namespace Login_Module
             string username = Console.ReadLine();
             temp_login.setUserName(username);
 
+            /* @ Create new random variable to automatic generate new verify code when it needed */
+            Random rand = new Random();
+            string randomCode = rand.Next(999999).ToString();
+            
             LinkedList<Staff_Login> list = Create_Read_Account_List();
 
             Staff_Login find_item = Find_Item_by_username_Return_Node(temp_login,list);
 
             Console.WriteLine("...\n");
-            Console.WriteLine("Enter new password you want to change\n");
-            string new_password = Console.ReadLine();
+            Send_Verify_Code(randomCode,find_item.getRecovery());
+            bool verify_result = Checking_Verify_code(randomCode);
 
-            // set new password to the node in list
-            find_item.setPassword(new_password);
-
-            /* @Write the new information to the file */
-            bool flag_file = Write_To_File(list);
-            if (flag_file == true)
+            if (verify_result == true)
             {
-                Console.WriteLine("Successfully changing the password.\n" +
-                "The Program will return soon\n");
-                return true;
+                Console.WriteLine("Enter new password you want to change\n");
+                string new_password = Console.ReadLine();
+
+                // set new password to the node in list
+                find_item.setPassword(new_password);
+
+                /* @Write the new information to the file */
+                bool flag_file = Write_To_File(list);
+                if (flag_file == true)
+                {
+                    Console.WriteLine("Successfully changing the password.\n" +
+                    "The Program will return soon\n");
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
-            else
-            {
+            else {
+                Console.WriteLine("Change password failed\n");
                 return false;
             }
         }
@@ -281,12 +287,16 @@ namespace Login_Module
                 byte[] byteArray_Password = Encoding.ASCII.GetBytes(Split_List_Item[1]);
                 byte[] byteArray_Key_Decrypted = Encoding.ASCII.GetBytes(Split_List_Item[2]);
                 byte[] byteArray_IV_Decrypted = Encoding.ASCII.GetBytes(Split_List_Item[3]);
+                byte[] byteArray_Email_Recovery_Decrypted = Encoding.ASCII.GetBytes(Split_List_Item[4]);
 
                 string username = Enccypted_Login.Decrypt(byteArray_Username, byteArray_Key_Decrypted, byteArray_IV_Decrypted);
                 string password = Enccypted_Login.Decrypt(byteArray_Password, byteArray_Key_Decrypted, byteArray_IV_Decrypted);
+                string email_recovery = Enccypted_Login.Decrypt(byteArray_Email_Recovery_Decrypted, byteArray_Key_Decrypted, byteArray_IV_Decrypted);
 
                 temp.setUserName(username);
                 temp.setPassword(password);
+                temp.setRecovery(email_recovery);
+
                 list_Account.AddFirst(temp);
             }
             return list_Account;
@@ -422,53 +432,6 @@ namespace Login_Module
                 menu_Login_Staff(temp_login, list_account);
             }
         }
-        static bool Write_To_File(LinkedList<Staff_Login> list_account)
-        {
-            /*@ Assign the file */
-            string filename = "Login.txt";
-
-            if(list_account.Count() == 0){
-                Console.WriteLine("The list is empty cannot write to file\n");
-                return false;
-            }
-
-            if (File.Exists(filename)){ 
-                
-                /* Delete the file if it exsist to update new information whenever write to file again */
-                File.Delete(filename);
-                File.Create(filename);
-            }
-            else if(!File.Exists(filename)){
-                File.Create(filename);
-            }
-
-            foreach (Staff_Login staff in list_account)
-            {
-                using (AesManaged aes = new AesManaged())
-                {
-                    // Encrypt string
-                    byte[] username = Enccypted_Login.Encrypt(staff.getPassword(), aes.Key, aes.IV);
-                    byte[] password = Enccypted_Login.Encrypt(staff.getUserName(), aes.Key, aes.IV);
-                    byte[] key = aes.Key;
-                    byte[] iv = aes.IV;
-
-                    // Write encrypted string    
-                    string encypted_Username = System.Text.Encoding.UTF8.GetString(username);
-                    string encypted_Password = System.Text.Encoding.UTF8.GetString(password);
-                    string encypted_key = System.Text.Encoding.UTF8.GetString(key);
-                    string encypted_iv = System.Text.Encoding.UTF8.GetString(iv);
-
-                    /* @string stored in the file need to in layout 
-                     * @encypted_Username-encypted_Password-encypted_key-encypted_iv
-                     */
-
-                    string Write_to_File_Format = encypted_Username + "-" + encypted_Password + "-"
-                        + encypted_key + "-" + encypted_iv;
-                    File.WriteAllText(Write_to_File_Format, filename);
-                }
-            }
-            return true;
-        }
         static void Create_Write_New_Staff_List()
         {
             Staff_Login temp = new Staff_Login();
@@ -476,6 +439,7 @@ namespace Login_Module
 
             string username;
             string password;
+            string recovery_email;
 
             Console.WriteLine("Enter the number of Staffs in the company you want to assign\n");
             int number_of_Staffs = Convert.ToInt32(Console.ReadLine());
@@ -496,8 +460,13 @@ namespace Login_Module
                 // Check if the user want to exit the program
                 if (password.CompareTo("Exit") == 0) { return; }
 
+                Console.WriteLine("Email: ");
+                recovery_email = Console.ReadLine();
+                if (password.CompareTo("Exit") == 0) { return; }
+
                 temp.setUserName(username);
                 temp.setPassword(password);
+                temp.setRecovery(recovery_email);
                 list_Account.AddFirst(temp);
             }
             /* @ Call the function to encypted and write to the file the information
@@ -507,6 +476,58 @@ namespace Login_Module
             /* @Checking the flag and throw the message */
             if (flag == true) Console.WriteLine("Write to file successfully\n");
             else Console.WriteLine("Write the list of the staffs false\n");
+        }
+        static bool Write_To_File(LinkedList<Staff_Login> list_account)
+        {
+            /*@ Assign the file */
+            string filename = "Login.txt";
+
+            if (list_account.Count() == 0)
+            {
+                Console.WriteLine("The list is empty cannot write to file\n");
+                return false;
+            }
+
+            if (File.Exists(filename))
+            {
+
+                /* Delete the file if it exsist to update new information whenever write to file again */
+                File.Delete(filename);
+                File.Create(filename);
+            }
+            else if (!File.Exists(filename))
+            {
+                File.Create(filename);
+            }
+
+            foreach (Staff_Login staff in list_account)
+            {
+                using (AesManaged aes = new AesManaged())
+                {
+                    // Encrypt string
+                    byte[] username = Enccypted_Login.Encrypt(staff.getPassword(), aes.Key, aes.IV);
+                    byte[] password = Enccypted_Login.Encrypt(staff.getUserName(), aes.Key, aes.IV);
+                    byte[] key = aes.Key;
+                    byte[] iv = aes.IV;
+                    byte[] recovery_email = Enccypted_Login.Encrypt(staff.getRecovery(), aes.Key, aes.IV);
+
+                    // Write encrypted string    
+                    string encypted_Username = System.Text.Encoding.UTF8.GetString(username);
+                    string encypted_Password = System.Text.Encoding.UTF8.GetString(password);
+                    string encypted_key = System.Text.Encoding.UTF8.GetString(key);
+                    string encypted_iv = System.Text.Encoding.UTF8.GetString(iv);
+                    string encypted_Recovery_Email = System.Text.Encoding.UTF8.GetString(recovery_email);
+
+                    /* @string stored in the file need to in layout 
+                     * @encypted_Username-encypted_Password-encypted_key-encypted_iv-emaill_recovery
+                     */
+
+                    string Write_to_File_Format = encypted_Username + "-" + encypted_Password + "-"
+                        + encypted_key + "-" + encypted_iv + "-" + encypted_Recovery_Email;
+                    File.WriteAllText(Write_to_File_Format, filename);
+                }
+            }
+            return true;
         }
     }
 }

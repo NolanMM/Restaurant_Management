@@ -15,6 +15,8 @@ namespace Login_Module
         private byte[] IV = null;
         //// The key to decrypted the account
         private byte[] Key = null;
+
+        private string _recovery_email;
         public void setUserName(string Username){
             _username = Username;
         }
@@ -38,6 +40,15 @@ namespace Login_Module
         }
         public byte[] getIV(){
             return IV;
+        }
+
+        public void setRecovery(string Recovery)
+        {
+            _recovery_email = Recovery;
+        }
+        public string getRecovery()
+        {
+            return _recovery_email;
         }
     }
     public class Inventory_Food
