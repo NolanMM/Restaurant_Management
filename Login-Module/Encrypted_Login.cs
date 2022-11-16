@@ -6,37 +6,6 @@ namespace Login_Module
 
     public class Enccypted_Login
     {
-        //public static void Main()
-        //{
-        //    Console.WriteLine("Enter text that needs to be encrypted..");
-        //    string data = Console.ReadLine();
-        //    EncryptAesManaged(data);
-        //    Console.ReadLine();
-        //}
-        static void EncryptAesManaged(string raw)
-        {
-            try
-            {
-                // Create Aes that generates a new key and initialization vector (IV).    
-                // Same key must be used in encryption and decryption    
-                using (AesManaged aes = new AesManaged())
-                {
-                    // Encrypt string    
-                    byte[] encrypted = Encrypt(raw, aes.Key, aes.IV);
-                    // Print encrypted string    
-                    Console.WriteLine("Encrypted data: " + System.Text.Encoding.UTF8.GetString(encrypted));
-                    // Decrypt the bytes to a string.    
-                    string decrypted = Decrypt(encrypted, aes.Key, aes.IV);
-                    // Print decrypted string. It should be same as raw data    
-                    Console.WriteLine("Decrypted data: " + decrypted);
-                }
-            }
-            catch (Exception exp)
-            {
-                Console.WriteLine(exp.Message);
-            }
-            Console.ReadKey();
-        }
         static public byte[] Encrypt(string plainText, byte[] Key, byte[] IV)
         {
             byte[] encrypted;

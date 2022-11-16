@@ -75,12 +75,14 @@ namespace Login_Module
 
             // Check if the user want to exit the program
             if (username.CompareTo("Exit") == 0) { return; }
+            if (username.CompareTo("Return") == 0) { Login(); }
 
             Console.WriteLine("Password: ");
             password = Console.ReadLine();
 
             // Check if the user want to exit the program
             if (password.CompareTo("Exit") == 0) { return; }
+            if (username.CompareTo("Return") == 0) { Login(); }
 
             // Assign value to Node in Staff_login list
             temp_login.setUserName(username);
@@ -432,6 +434,57 @@ namespace Login_Module
                 menu_Login_Staff(temp_login, list_account);
             }
         }
+        static bool Write_To_File(LinkedList<Staff_Login> list_account)
+        {
+            /*@ Assign the file */
+            string filename = "Login.txt";
+
+            /*@ Check the number of items inside the list*/
+            if (list_account.Count() == 0){
+                Console.WriteLine("The list is empty cannot write to file\n");
+                return false;
+            }
+
+            if (File.Exists(filename)){
+                /* Delete the file if it exsist to update new information whenever write to file again */
+                File.Delete(filename);
+                File.Create(filename);
+            }
+            else if (!File.Exists(filename))
+            {
+                File.Create(filename);
+            }
+
+            /*@ Loop through each item in the list */
+            foreach (Staff_Login staff in list_account)
+            {
+                using (AesManaged aes = new AesManaged())
+                {
+                    // Encrypt string
+                    byte[] username = Enccypted_Login.Encrypt(staff.getPassword(), aes.Key, aes.IV);
+                    byte[] password = Enccypted_Login.Encrypt(staff.getUserName(), aes.Key, aes.IV);
+                    byte[] key = aes.Key;
+                    byte[] iv = aes.IV;
+                    byte[] recovery_email = Enccypted_Login.Encrypt(staff.getRecovery(), aes.Key, aes.IV);
+
+                    // Write encrypted string    
+                    string encypted_Username = System.Text.Encoding.UTF8.GetString(username);
+                    string encypted_Password = System.Text.Encoding.UTF8.GetString(password);
+                    string encypted_key = System.Text.Encoding.UTF8.GetString(key);
+                    string encypted_iv = System.Text.Encoding.UTF8.GetString(iv);
+                    string encypted_Recovery_Email = System.Text.Encoding.UTF8.GetString(recovery_email);
+
+                    /* @string stored in the file need to in layout 
+                     * @encypted_Username-encypted_Password-encypted_key-encypted_iv-emaill_recovery
+                     */
+
+                    string Write_to_File_Format = encypted_Username + "-" + encypted_Password + "-"
+                        + encypted_key + "-" + encypted_iv + "-" + encypted_Recovery_Email;
+                    File.WriteAllText(Write_to_File_Format, filename);
+                }
+            }
+            return true;
+        }
         static void Create_Write_New_Staff_List()
         {
             Staff_Login temp = new Staff_Login();
@@ -444,7 +497,7 @@ namespace Login_Module
             Console.WriteLine("Enter the number of Staffs in the company you want to assign\n");
             int number_of_Staffs = Convert.ToInt32(Console.ReadLine());
 
-            for(int i = 0; i < number_of_Staffs; i++)
+            for (int i = 0; i < number_of_Staffs; i++)
             {
                 Console.WriteLine("***** Login *****\n");
                 Console.WriteLine("// You can enter Exit to Exit or Return to return //");
@@ -474,60 +527,8 @@ namespace Login_Module
             bool flag = Write_To_File(list_Account);
 
             /* @Checking the flag and throw the message */
-            if (flag == true) Console.WriteLine("Write to file successfully\n");
-            else Console.WriteLine("Write the list of the staffs false\n");
-        }
-        static bool Write_To_File(LinkedList<Staff_Login> list_account)
-        {
-            /*@ Assign the file */
-            string filename = "Login.txt";
-
-            if (list_account.Count() == 0)
-            {
-                Console.WriteLine("The list is empty cannot write to file\n");
-                return false;
-            }
-
-            if (File.Exists(filename))
-            {
-
-                /* Delete the file if it exsist to update new information whenever write to file again */
-                File.Delete(filename);
-                File.Create(filename);
-            }
-            else if (!File.Exists(filename))
-            {
-                File.Create(filename);
-            }
-
-            foreach (Staff_Login staff in list_account)
-            {
-                using (AesManaged aes = new AesManaged())
-                {
-                    // Encrypt string
-                    byte[] username = Enccypted_Login.Encrypt(staff.getPassword(), aes.Key, aes.IV);
-                    byte[] password = Enccypted_Login.Encrypt(staff.getUserName(), aes.Key, aes.IV);
-                    byte[] key = aes.Key;
-                    byte[] iv = aes.IV;
-                    byte[] recovery_email = Enccypted_Login.Encrypt(staff.getRecovery(), aes.Key, aes.IV);
-
-                    // Write encrypted string    
-                    string encypted_Username = System.Text.Encoding.UTF8.GetString(username);
-                    string encypted_Password = System.Text.Encoding.UTF8.GetString(password);
-                    string encypted_key = System.Text.Encoding.UTF8.GetString(key);
-                    string encypted_iv = System.Text.Encoding.UTF8.GetString(iv);
-                    string encypted_Recovery_Email = System.Text.Encoding.UTF8.GetString(recovery_email);
-
-                    /* @string stored in the file need to in layout 
-                     * @encypted_Username-encypted_Password-encypted_key-encypted_iv-emaill_recovery
-                     */
-
-                    string Write_to_File_Format = encypted_Username + "-" + encypted_Password + "-"
-                        + encypted_key + "-" + encypted_iv + "-" + encypted_Recovery_Email;
-                    File.WriteAllText(Write_to_File_Format, filename);
-                }
-            }
-            return true;
+            if (flag == true) { Console.WriteLine("Write to file successfully\n"); }
+            else { Console.WriteLine("Write the list of the staffs false\n"); }
         }
     }
 }
