@@ -40,7 +40,7 @@ namespace Login_Module
             return IV;
         }
     }
-    public class Inventory
+    public class Inventory_Food
     {
 
         private string? _Name;

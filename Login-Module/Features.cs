@@ -7,6 +7,14 @@ using System.IO;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Net;
+using System.Net.Mail;
+using System.Threading.Tasks;
+using System.Reflection.Metadata.Ecma335;
 
 namespace Login_Module
 {
@@ -37,7 +45,6 @@ namespace Login_Module
                     // This function will take the input of user 
                     // When have time
                     Forgot_Password();
-
                     break;
                 case 3:
                     Program.menu();
@@ -94,10 +101,123 @@ namespace Login_Module
                 Login_Restaurant();
             }
         }
+        static public bool Send_Verify_Code(string randomCode)
+        {
+            /* @ Create new variable to hold the sender email, password of the sender, and the message is the code */
+            String from, pass, messageBody;
+
+            /* @ Input the information of Sender */
+            from = "group4sendblackmailtou@gmail.com";
+            pass = "bbsmmmsnfhealzte";
+            messageBody = " your reset code is " + randomCode;
+
+            /* @ Generate new email to send to the receiver */
+            MailMessage email = new MailMessage();
+            /* @ Input the information of the Receiver and the information for the email components*/
+            email.From = new MailAddress(from);
+            email.To.Add("minhlenguyen02@gmail.com");
+            email.Body = messageBody;
+            email.Subject = "Password Reseting Code";
+
+            /* @ Generate smtp server to send the verify email */
+            SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
+            SmtpServer.EnableSsl = true;
+            SmtpServer.Port = 587;
+            SmtpServer.DeliveryMethod = SmtpDeliveryMethod.Network;
+            /* @ Checking the app password of the google email and the email of the sender */
+            SmtpServer.Credentials = new NetworkCredential(from, pass);
+
+            try
+            {
+                SmtpServer.Send(email);
+                //Console.WriteLine("Email Successfully Sent");
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return false;
+            }
+        }
         static public void Forgot_Password()
         {
+            /* @ Create new random variable to automatic generate new verify code when it needed */
+            Random rand = new Random();
+            string randomCode = rand.Next(999999).ToString();
+            Send_Verify_Code(randomCode);
 
+            /* @ Checking the verify code 3 times or 
+             * @ Else logout and start from beginning due to the security 
+             */
+            int count = 0;
+            while (count >= 0)
+            {
+                if(count == 2)
+                {
+                    count = -1;
+                    Console.WriteLine("You input wrong too many times. You will be transfer to login...\n");
+                    Login();
+                }
+                Console.WriteLine("Please enter the verify code be sent to your email\n");
+                Console.WriteLine("Or enter Exit to Exit, Return to Return\n");
+                string verify_code_input = Console.ReadLine();
+                if (verify_code_input.CompareTo("Return") == 0)
+                {
+                    // set the flag to -1 value to escapse while loop
+                    Login();
+                    count = -1;
+                }
+                if (verify_code_input.CompareTo("Exit") == 0)
+                {
+                    // set the flag to -1 value to escapse while loop
+                    Login();
+                    count = -1;
+                }
+                if(verify_code_input.CompareTo(randomCode) == 0)
+                {
+                    bool flag = Change_Forgot_Password();
+                    if(flag == true)
+                    {
+                        Login_Restaurant();
+                    }
+                    else { Console.WriteLine("Change password failed\n"); }
+                }
+                else {int times_input_left = 2-count; Console.WriteLine("Wrong Verify code, u have only"+ times_input_left.ToString());count++; }
+            }
         }
+        static public bool Change_Forgot_Password()
+        {
+            /* @Take the username from staff forgot password */
+            Staff_Login temp_login = new Staff_Login();
+            Console.WriteLine("Please enter your username \n");
+            string username = Console.ReadLine();
+            temp_login.setUserName(username);
+
+            LinkedList<Staff_Login> list = Create_Read_Account_List();
+
+            Staff_Login find_item = Find_Item_by_username_Return_Node(temp_login,list);
+
+            Console.WriteLine("...\n");
+            Console.WriteLine("Enter new password you want to change\n");
+            string new_password = Console.ReadLine();
+
+            // set new password to the node in list
+            find_item.setPassword(new_password);
+
+            /* @Write the new information to the file */
+            bool flag_file = Write_To_File(list);
+            if (flag_file == true)
+            {
+                Console.WriteLine("Successfully changing the password.\n" +
+                "The Program will return soon\n");
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        
         static public void menu_Login_Staff(Staff_Login temp_login, LinkedList<Staff_Login> list)
         {
             // Print out the Options for the Staff
@@ -107,7 +227,7 @@ namespace Login_Module
             Console.WriteLine("3. Check the security\n");
             Console.WriteLine("4. Check the salary\n");
             Console.WriteLine("5. Check the time table\n");
-            Console.WriteLine("7. Change the Password\n");
+            Console.WriteLine("6. Change the Password\n");
             Console.WriteLine("8. Logout\n");
             Console.WriteLine("9. Exit\n");
 
@@ -171,25 +291,48 @@ namespace Login_Module
             }
             return list_Account;
         }
+        static Staff_Login Find_Item_by_username_Return_Node(Staff_Login staff_Login, LinkedList<Staff_Login> staff_Login_List)
+        {
+            Staff_Login find_item = new Staff_Login();
+            Staff_Login[] staff_login_list_array = staff_Login_List.ToArray();
+            int flag = 0;
+            int count = staff_Login_List.Count();
+
+            foreach (Staff_Login item in staff_login_list_array)
+            {
+                if (flag <= count)
+                {
+                    if (staff_Login.getUserName().CompareTo(item.getUserName()) == 0)
+                    {
+                        find_item = item;
+                        return find_item;   
+                    }
+                    else
+                    {
+                        flag++;
+                    }
+                }
+                else
+                {
+                    find_item = null;
+                    return find_item;
+                }
+            }
+            return find_item;
+        }
         static public bool Checking_Password(LinkedList<Staff_Login> staff_Login_List, Staff_Login staff_Login)
         {
+            Staff_Login find_item = Find_Item_by_username_Return_Node(staff_Login, staff_Login_List);
 
-            if (staff_Login_List.Contains(staff_Login) == true)
-            {
-
-                LinkedListNode<Staff_Login> _Account_infor = staff_Login_List.Find(staff_Login);
-                if (staff_Login.getPassword().CompareTo(_Account_infor.Value.getPassword()) == 0) //Is new node in left tree?
-                {
-                    Console.WriteLine("Correct password input\nThank you!!");
-                    return true;
-                }
-                else if (staff_Login.getPassword().CompareTo(_Account_infor.Value.getPassword()) != 0) //Is new node in right tree?
-                {
-                    Console.WriteLine("Incorrect password input\nThank you!!");
-                }
+            if (staff_Login.getPassword().CompareTo(find_item.getPassword()) == 0) {
+                Console.WriteLine("Correct password input\nThank you!!");
+                return true;
+            }
+            else if (staff_Login.getPassword().CompareTo(find_item.getPassword()) != 0) {
+                Console.WriteLine("Incorrect password input\nThank you!!");
                 return false;
             }
-            return false;
+            return true;
         }
         static public void Change_Password(Staff_Login temp_login, LinkedList<Staff_Login> list_account)
         {
@@ -201,8 +344,8 @@ namespace Login_Module
                 return;
             }
             // Find the node inside the linked list to change the passwords
-            LinkedListNode<Staff_Login> node_change_password = list_account.Find(temp_login);
-
+            //LinkedListNode<Staff_Login> node_change_password = list_account.Find(temp_login);
+            Staff_Login node_change_password = Find_Item_by_username_Return_Node(temp_login, list_account);
             int flag = 0;
 
             
@@ -222,7 +365,7 @@ namespace Login_Module
                     list_account.Clear();
                     temp_login = null;
                     flag = -1;
-                    // Enter the program again
+                    // Enter the program again from beginning
                     Program.menu();
                 }
 
@@ -232,23 +375,30 @@ namespace Login_Module
                 /* @ if user want to return enter "Return"
                 *  @ if user want to exit the program enter "Exit" */
                 if (old_password.CompareTo("Return") == 0)
-                    {
-                        // set the flag to -1 value to escapse while loop
-                        menu_Login_Staff(temp_login, list_account);
-                        flag = -1;
-                    }
-        
+                {
+                    // set the flag to -1 value to escapse while loop
+                    menu_Login_Staff(temp_login, list_account);
+                    flag = -1;
+                }
+
+                if (old_password.CompareTo("Exit") == 0)
+                {
+                    // set the flag to -1 value to escapse while loop
+                    menu_Login_Staff(temp_login, list_account);
+                    flag = -1;
+                }
+
                 /* @Check the old password
                 * @if true allow to change the password
                 * @if false ask for input again or exit */
 
-                if (old_password.CompareTo(node_change_password.Value.getPassword()) == 0) {
+                if (old_password.CompareTo(node_change_password.getPassword()) == 0) {
                     Console.WriteLine("...\n");
                     Console.WriteLine("Enter new password you want to change\n");
                     string new_password = Console.ReadLine();
 
                     // set new password to the node in list
-                    node_change_password.Value.setPassword(new_password);
+                    node_change_password.setPassword(new_password);
 
                     /* @Write the new information to the file */
                     bool flag_file = Write_To_File(list_account);

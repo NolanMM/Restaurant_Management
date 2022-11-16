@@ -14,7 +14,7 @@ namespace Login_Module
             string username = "MinhNguyen";
             string password = "Hello";
             //BinaryTree var_temp = new BinaryTree();
-            Staff_Login temp = new Staff_Login();
+            Class temp = new Class();
 
             temp.setUserName(username);
             temp.setPassword(password);
