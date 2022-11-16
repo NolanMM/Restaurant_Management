@@ -34,6 +34,13 @@ namespace Login_Module
         private int Portions;
         public void setNameFood(string name){_Name = name;}
         public string getNameFood(){return _Name;}
+        public void setPortionFood(int portions) { Portions = portions; }
+        public int getPortionFood() { return Portions; }
     }
-    
+    public class Items
+    {
+
+    }
+
+
 }

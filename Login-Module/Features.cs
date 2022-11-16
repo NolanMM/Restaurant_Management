@@ -20,7 +20,29 @@ namespace Login_Module
 {
     public class Features
     {
-        
+
+        static public void menu()
+        {
+            Console.WriteLine("Please enter the identity you want to access\n");
+            Console.WriteLine("1. Guest\n");
+            Console.WriteLine("2. Staff\n");
+            Console.WriteLine("2. Exit\n");
+            // Create variable to take the input from user
+
+            Console.WriteLine("Please enter the number you want to choose: ");
+
+            int choice = Convert.ToInt32(Console.ReadLine());
+
+            switch (choice)
+            {
+                case 0:
+                    // The function to link with all the option for the guests ... 
+                    break;
+                case 1:
+                    Login();
+                    break;
+            }
+        }
         static public void Login()
         {
             Console.WriteLine("Welcome to The restaurant\n");
@@ -47,7 +69,7 @@ namespace Login_Module
                     Change_Forgot_Password();
                     break;
                 case 3:
-                    Program.menu();
+                    menu();
                     break;
                 case 4:
                     Console.WriteLine("Thank you for using program\n");
@@ -250,7 +272,7 @@ namespace Login_Module
                     // Menu
                     break;
                 case 2:
-                    // Inventory
+                    Inventory.Inventory_Manager();
                     break;
                 case 3:
                     // Security
@@ -378,7 +400,7 @@ namespace Login_Module
                     temp_login = null;
                     flag = -1;
                     // Enter the program again from beginning
-                    Program.menu();
+                    menu();
                 }
 
                 Console.WriteLine("Please enter the old password to confirm change password\n");
