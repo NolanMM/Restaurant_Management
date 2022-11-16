@@ -41,6 +41,10 @@ namespace Login_Module
     {
 
     }
+    public class Salary
+    {
+
+    }
 
 
 }
