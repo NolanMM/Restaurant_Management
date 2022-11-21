@@ -551,6 +551,26 @@ namespace Login_Module
             /* @Checking the flag and throw the message */
             if (flag == true) { Console.WriteLine("Write to file successfully\n"); }
             else { Console.WriteLine("Write the list of the staffs false\n"); }
+
+            // Create new function to write the information of the staff inside the file and encrypted it do the same as username and password for security 
+            // Create new function to write the information of the staff inside the file and encrypted it do the same as username and password for security 
+            // Create new function to write the information of the staff inside the file and encrypted it do the same as username and password for security 
+            // Create new function to write the information of the staff inside the file and encrypted it do the same as username and password for security 
+            // Create new function to write the information of the staff inside the file and encrypted it do the same as username and password for security 
+            // Create new function to write the information of the staff inside the file and encrypted it do the same as username and password for security 
+            // Create new function to write the information of the staff inside the file and encrypted it do the same as username and password for security 
+            // Create new function to write the information of the staff inside the file and encrypted it do the same as username and password for security 
+            // Create new function to write the information of the staff inside the file and encrypted it do the same as username and password for security 
+            // Create new function to write the information of the staff inside the file and encrypted it do the same as username and password for security 
+            // Create new function to write the information of the staff inside the file and encrypted it do the same as username and password for security 
+            // Create new function to write the information of the staff inside the file and encrypted it do the same as username and password for security 
+            // Create new function to write the information of the staff inside the file and encrypted it do the same as username and password for security 
+            // Create new function to write the information of the staff inside the file and encrypted it do the same as username and password for security 
+            // Create new function to write the information of the staff inside the file and encrypted it do the same as username and password for security 
+            // Create new function to write the information of the staff inside the file and encrypted it do the same as username and password for security 
+            // Create new function to write the information of the staff inside the file and encrypted it do the same as username and password for security 
+            // Create new function to write the information of the staff inside the file and encrypted it do the same as username and password for security 
+            // Create new function to write the information of the staff inside the file and encrypted it do the same as username and password for security 
         }
     }
 }

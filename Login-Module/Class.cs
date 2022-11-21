@@ -28,6 +28,11 @@ namespace Login_Module
         public void setRecovery(string Recovery){_recovery_email = Recovery;}
         public string getRecovery(){return _recovery_email;}
     }
+    public class Staff_Infor
+    {
+        string _Name;
+        
+    }
     public class Inventory_Food
     {
         private string _Name;
@@ -43,7 +48,7 @@ namespace Login_Module
     }
     public class Salary
     {
-
+        //string
     }
 
 
