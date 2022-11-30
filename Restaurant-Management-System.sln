@@ -5,9 +5,13 @@ VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Restaurant-Management-System", "Restaurant-Management-System\Restaurant-Management-System.csproj", "{DC72EF6F-F711-4AB1-BC99-A6CAF61FDA58}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Minh_modules", "Minh_modules\Minh_modules.csproj", "{0E0B747F-F248-40E3-8035-DDE7800E3C7D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Minh_modules", "Minh_modules\Minh_modules.csproj", "{0E0B747F-F248-40E3-8035-DDE7800E3C7D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Minh_modulesTests", "Minh_modulesTests\Minh_modulesTests.csproj", "{B2006BD2-37F2-4C0A-B1B6-6B20EE5AA475}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Minh_modulesTests", "Minh_modulesTests\Minh_modulesTests.csproj", "{B2006BD2-37F2-4C0A-B1B6-6B20EE5AA475}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GlebI_modules", "MenuModule_GlebI\GlebI_modules.csproj", "{22DF8DFB-213D-45F6-AE39-7A4FCCA89AF8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GlebI_modulesTests", "GlebI_modulesTests\GlebI_modulesTests.csproj", "{29408B2B-2D19-4283-ACAC-3BC7C9BF3FBC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +31,14 @@ Global
 		{B2006BD2-37F2-4C0A-B1B6-6B20EE5AA475}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B2006BD2-37F2-4C0A-B1B6-6B20EE5AA475}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B2006BD2-37F2-4C0A-B1B6-6B20EE5AA475}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22DF8DFB-213D-45F6-AE39-7A4FCCA89AF8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22DF8DFB-213D-45F6-AE39-7A4FCCA89AF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22DF8DFB-213D-45F6-AE39-7A4FCCA89AF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22DF8DFB-213D-45F6-AE39-7A4FCCA89AF8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29408B2B-2D19-4283-ACAC-3BC7C9BF3FBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29408B2B-2D19-4283-ACAC-3BC7C9BF3FBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29408B2B-2D19-4283-ACAC-3BC7C9BF3FBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29408B2B-2D19-4283-ACAC-3BC7C9BF3FBC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
